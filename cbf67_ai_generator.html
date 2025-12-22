@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBF67 AI Image Generator | $CBF67</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Righteous&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Righteous', cursive;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #ff1a75, #ffb347, #00ff88);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 3s ease infinite;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        @keyframes gradient {
+
+            0%,
+            100% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #1dd3b0;
+            margin-bottom: 30px;
+        }
+
+        .generator-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(0, 212, 212, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .control-group label {
+            display: block;
+            color: #aaa;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .control-group select,
+        .control-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 212, 212, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .generate-btn {
+            background: linear-gradient(45deg, #ff1a75, #d946a6);
+            color: #fff;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 26, 117, 0.5);
+            display: block;
+            margin: 20px auto;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .generate-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .image-container {
+            position: relative;
+            max-width: 512px;
+            margin: 30px auto 0;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #00d4d4;
+            box-shadow: 0 15px 50px rgba(0, 255, 136, 0.3);
+            background: #000;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-container img {
+            width: 100%;
+            display: block;
+        }
+
+        .placeholder {
+            color: #666;
+            font-size: 1.1rem;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .loading {
+            color: #1dd3b0;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.5
+            }
+        }
+
+        .prompt-display {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #ffb347;
+            word-break: break-word;
+        }
+
+        .prompt-label {
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #00d4d4, #1dd3b0);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            font-weight: 700;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 15px auto;
+            display: none;
+        }
+
+        .download-btn.visible {
+            display: block;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: #00ff88;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🐸 CBF67 AI Image Generator 🦍</h1>
+        <p class="subtitle">Bonk or get croaked. Generate unique AI artwork!</p>
+
+        <div class="generator-box">
+            <div class="controls">
+                <div class="control-group">
+                    <label>Art Style</label>
+                    <select id="styleSelect">
+                        <option value="digital art, vibrant colors">Digital Art</option>
+                        <option value="anime style illustration">Anime Style</option>
+                        <option value="oil painting, detailed">Oil Painting</option>
+                        <option value="retro 80s neon aesthetic">80s Neon Retro</option>
+                        <option value="pixel art, 8-bit style">Pixel Art</option>
+                        <option value="watercolor painting">Watercolor</option>
+                        <option value="comic book style, bold lines">Comic Book</option>
+                        <option value="photorealistic, cinematic lighting">Photorealistic</option>
+                        <option value="graffiti street art style">Street Art</option>
+                        <option value="psychedelic poster art">Psychedelic</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Scene</label>
+                    <select id="sceneSelect">
+                        <option value="tropical beach with palm trees">Tropical Beach</option>
+                        <option value="neon-lit cyberpunk city at night">Cyberpunk City</option>
+                        <option value="lush jungle rainforest">Jungle Rainforest</option>
+                        <option value="underwater coral reef">Underwater Reef</option>
+                        <option value="disco nightclub with lights">Disco Club</option>
+                        <option value="ancient temple ruins">Ancient Temple</option>
+                        <option value="space station with stars">Space Station</option>
+                        <option value="casino with slot machines">Casino Floor</option>
+                        <option value="mountain peak at sunset">Mountain Sunset</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Mood</label>
+                    <select id="moodSelect">
+                        <option value="fun and playful">Fun & Playful</option>
+                        <option value="epic and dramatic">Epic & Dramatic</option>
+                        <option value="mysterious and moody">Mysterious</option>
+                        <option value="psychedelic and trippy">Trippy</option>
+                        <option value="romantic sunset vibes">Romantic</option>
+                        <option value="action packed and dynamic">Action Packed</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="generate-btn" id="generateBtn" onclick="generateImage()">
+                🎲 Generate AI Image
+            </button>
+
+            <div class="image-container" id="imageContainer">
+                <div class="placeholder">Click "Generate" to create a unique CBF67 image!</div>
+            </div>
+
+            <button class="download-btn" id="downloadBtn" onclick="downloadImage()">⬇️ Download Image</button>
+
+            <div class="prompt-display" id="promptDisplay" style="display:none;">
+                <div class="prompt-label">Generated Prompt:</div>
+                <div id="promptText"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Powered by <a href="https://pollinations.ai" target="_blank">Pollinations.ai</a> - Free AI Image
+                Generation</p>
+        </div>
+    </div>
+
+    <script>
+        let currentImageUrl = null;
+
+        // Random slogans from CBF67
+        const slogans = [
+            "Bonk or get croaked",
+            "Nature's original fleshlight",
+            "Ribbit for her pleasure",
+            "Ape together strong",
+            "Diamond hands only",
+            "To the moon",
+            "HODL or die trying"
+        ];
+
+        function generateImage() {
+            const btn = document.getElementById('generateBtn');
+            const container = document.getElementById('imageContainer');
+            const promptDisplay = document.getElementById('promptDisplay');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            // Get selections
+            const style = document.getElementById('styleSelect').value;
+            const scene = document.getElementById('sceneSelect').value;
+            const mood = document.getElementById('moodSelect').value;
+
+            // Build CBF67 themed prompt
+            const prompt = `A sexy cyberpunk chimpanzee with a cheesy grin wearing a Hawaiian shirt, ` +
+                `holding hands with a seductive frog in a bikini, ` +
+                `${scene}, ${style}, ${mood}, ` +
+                `high quality, detailed, trending on artstation`;
+
+            // Show loading
+            btn.disabled = true;
+            btn.textContent = '⏳ Generating...';
+            container.innerHTML = '<div class="placeholder loading">🎨 Creating your CBF67 artwork...</div>';
+            downloadBtn.classList.remove('visible');
+
+            // Pollinations.ai - Free, no API key needed!
+            const seed = Math.floor(Math.random() * 999999);
+            const encodedPrompt = encodeURIComponent(prompt);
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&seed=${seed}&nologo=true`;
+
+            // Create image element
+            const img = new Image();
+            img.onload = function () {
+                container.innerHTML = '';
+                container.appendChild(img);
+                currentImageUrl = imageUrl;
+
+                // Show prompt and download button
+                document.getElementById('promptText').textContent = prompt;
+                promptDisplay.style.display = 'block';
+                downloadBtn.classList.add('visible');
+
+                // Reset button
+                btn.disabled = false;
+                btn.textContent = '🎲 Generate AI Image';
+
+                // Add random CBF67 slogan
+                const slogan = slogans[Math.floor(Math.random() * slogans.length)];
+                console.log('CBF67 says: ' + slogan);
+            };
+
+            img.onerror = function () {
+                container.innerHTML = '<div class="placeholder" style="color:#ff4444;">❌ Generation failed. Try again!</div>';
+                btn.disabled = false;
+                btn.textContent = '🎲 Generate AI Image';
+            };
+
+            img.src = imageUrl;
+            img.alt = 'CBF67 AI Generated Image';
+            img.style.width = '100%';
+        }
+
+        function downloadImage() {
+            if (!currentImageUrl) return;
+
+            // Open image in new tab (direct download requires CORS)
+            window.open(currentImageUrl, '_blank');
+        }
+    </script>
+</body>
+
+</html>
