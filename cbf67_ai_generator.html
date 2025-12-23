@@ -215,47 +215,8 @@
         <p class="subtitle">Bonk or get croaked. Generate unique AI artwork!</p>
 
         <div class="generator-box">
-            <div class="controls">
-                <div class="control-group">
-                    <label>Art Style</label>
-                    <select id="styleSelect">
-                        <option value="digital art, vibrant colors">Digital Art</option>
-                        <option value="anime style illustration">Anime Style</option>
-                        <option value="oil painting, detailed">Oil Painting</option>
-                        <option value="retro 80s neon aesthetic">80s Neon Retro</option>
-                        <option value="pixel art, 8-bit style">Pixel Art</option>
-                        <option value="watercolor painting">Watercolor</option>
-                        <option value="comic book style, bold lines">Comic Book</option>
-                        <option value="photorealistic, cinematic lighting">Photorealistic</option>
-                        <option value="graffiti street art style">Street Art</option>
-                        <option value="psychedelic poster art">Psychedelic</option>
-                    </select>
-                </div>
-                <div class="control-group">
-                    <label>Scene</label>
-                    <select id="sceneSelect">
-                        <option value="tropical beach with palm trees">Tropical Beach</option>
-                        <option value="neon-lit cyberpunk city at night">Cyberpunk City</option>
-                        <option value="lush jungle rainforest">Jungle Rainforest</option>
-                        <option value="underwater coral reef">Underwater Reef</option>
-                        <option value="disco nightclub with lights">Disco Club</option>
-                        <option value="ancient temple ruins">Ancient Temple</option>
-                        <option value="space station with stars">Space Station</option>
-                        <option value="casino with slot machines">Casino Floor</option>
-                        <option value="mountain peak at sunset">Mountain Sunset</option>
-                    </select>
-                </div>
-                <div class="control-group">
-                    <label>Mood</label>
-                    <select id="moodSelect">
-                        <option value="fun and playful">Fun & Playful</option>
-                        <option value="epic and dramatic">Epic & Dramatic</option>
-                        <option value="mysterious and moody">Mysterious</option>
-                        <option value="psychedelic and trippy">Trippy</option>
-                        <option value="romantic sunset vibes">Romantic</option>
-                        <option value="action packed and dynamic">Action Packed</option>
-                    </select>
-                </div>
+            <div class="controls" style="display: none;">
+                <!-- Controls hidden as per request, prompts are now randomized -->
             </div>
 
             <button class="generate-btn" id="generateBtn" onclick="generateImage()">
@@ -294,33 +255,138 @@
             "HODL or die trying"
         ];
 
+        // User provided prompt options
+        const styles = [
+            "Vintage movie poster art",
+            "candy-colored sweetness",
+            "glitchy RGB split",
+            "1980s neon and chrome",
+            "1970s Disco glam",
+            "Victorian Gothic moodiness",
+            "Stone Age primitivism",
+            "Sega Genesis FM synthesis vibe",
+            "DOS game EGA palette",
+            "Vectrex vector graphics",
+            "Commodore 64 loading screen",
+            "in the style of Salvador Dalí's melting forms",
+            "in the style of Zdzisław Beksiński's dystopia",
+            "in the style of Alphonse Mucha's Art Nouveau",
+            "in the style of Hayao Miyazaki's backgrounds",
+            "in the style of Caravaggio's tenebrism",
+            "in the style of Banksy's stencils",
+            "in the style of Norman Rockwell's Americana",
+            "in the style of Yoshitaka Amano's elegance",
+            "in the style of Remedios Varo's surreal machinery",
+            "in the style of Gustave Doré's engravings",
+            "in the style of Jean-Michel Basquiat's neo-expressionism",
+            "in the style of Syd Mead's futurism",
+            "in the style of Edward Hopper's lonely scenes",
+            "in the style of Beatrix Potter's gentle watercolors",
+            "in the style of Frank Frazetta's fantasy art",
+            "in the style of Georgia O'Keeffe's floral forms",
+            "Ghibli-style anime screencap",
+            "Classic Disney golden age",
+            "Rubber hose animation, 1930s",
+            "Anime key visual poster",
+            "in the style of an 80s Saturday morning cartoon",
+            "Children's book illustration, by Eric Carle",
+            "Tim Burtonesque spooky style",
+            "Rotoscoping animation",
+            "Anime chibi characters",
+            "Graphic novel panel art",
+            "Hanna-Barbera limited animation",
+            "Laika Studios stop-motion",
+            "UPA animation style, Mr. Magoo",
+            "Genndy Tartakovsky angular style",
+            "Moebius comic art",
+            "Fleischer Studios surrealism",
+            "Aardman Animations claymation",
+            "Adventure Time whimsical style",
+            "Manga screen tones",
+            "Scientific illustration of a newly discovered species",
+            "Government PSA poster style",
+            "A drawing I made in class when I was bored",
+            "Movie still, anamorphic lens flare",
+            "Concept art for a Pixar movie character",
+            "Product shot on a seamless white background",
+            "Photo taken with a potato camera",
+            "Graffiti throw-up, quick and simple",
+            "DreamWorks face (smirking character animation still)",
+            "Art hoe aesthetic photo, plants and film camera",
+            "Minimalist movie poster using negative space",
+            "Vintage pin-up girl illustration (Gil Elvgren style)",
+            "Candid photo taken by a friend, slightly out of focus",
+            "Pokémon card illustration style",
+            "Creature design concept sheet, anatomical notes",
+            "Lo-fi hip hop radio animation loop still",
+            "Architectural elevation drawing",
+            "Weathered pirate treasure map",
+            "Awkward handshake stock photo",
+            "Retrofuturistic concept car design",
+            "Manga panel, intense emotional close-up",
+            "Detailed fantasy cartography, aged paper texture",
+            "Old school skateboard deck graphics"
+        ];
+
+        const locations = [
+            "on the island",
+            "in the valley",
+            "around here",
+            "over there",
+            "under this thing",
+            "beside a lava pool in Iceland",
+            "in a tuk-tuk in Bangkok",
+            "on a gondola in Venice",
+            "next to a goat shrine in Nepal",
+            "in a dreamy Tokyo café",
+            "on a secret jungle beach",
+            "neon-lit alley",
+            "underwater nightclub",
+            "Tokyo street",
+            "floating jungle city",
+            "rainforest rave",
+            "post-apocalyptic diner"
+        ];
+
+        const poses = [
+            "holding hands with the frog",
+            "holding the frog in one arm",
+            "giving the frog a cheeky side glance",
+            "making intense eye contact with the frog",
+            "frog sitting on the chimp's shoulder",
+            "chimp grinning with eyes locked on the frog"
+        ];
+
+        function getRandomItem(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
         function generateImage() {
             const btn = document.getElementById('generateBtn');
             const container = document.getElementById('imageContainer');
             const promptDisplay = document.getElementById('promptDisplay');
             const downloadBtn = document.getElementById('downloadBtn');
 
-            // Get selections
-            const style = document.getElementById('styleSelect').value;
-            const scene = document.getElementById('sceneSelect').value;
-            const mood = document.getElementById('moodSelect').value;
+            // Select random options
+            const style = getRandomItem(styles);
+            const location = getRandomItem(locations);
+            const pose = getRandomItem(poses);
 
-            // Build CBF67 themed prompt
-            const prompt = `A sexy cyberpunk chimpanzee with a cheesy grin wearing a Hawaiian shirt, ` +
-                `holding hands with a seductive frog in a bikini, ` +
-                `${scene}, ${style}, ${mood}, ` +
-                `high quality, detailed, trending on artstation`;
+            // Build prompt
+            // Pattern: A [inputStyle] of a sexy cyberpunk chimpanzee with a cheesy grin, wearing a Hawaiian shirt, [inputPose], with a seductive frog in a bikini, in a [inputLocation]
+            const prompt = `A ${style} of a sexy cyberpunk chimpanzee with a cheesy grin, wearing a Hawaiian shirt, ${pose}, with a seductive frog in a bikini, in a ${location}`;
 
             // Show loading
             btn.disabled = true;
             btn.textContent = '⏳ Generating...';
             container.innerHTML = '<div class="placeholder loading">🎨 Creating your CBF67 artwork...</div>';
             downloadBtn.classList.remove('visible');
+            promptDisplay.style.display = 'none';
 
-            // Pollinations.ai - Free, no API key needed!
+            // Pollinations.ai
             const seed = Math.floor(Math.random() * 999999);
             const encodedPrompt = encodeURIComponent(prompt);
-            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&seed=${seed}&nologo=true`;
+            const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=768&height=768&seed=${seed}&nologo=true`;
 
             // Create image element
             const img = new Image();
@@ -336,9 +402,9 @@
 
                 // Reset button
                 btn.disabled = false;
-                btn.textContent = '🎲 Generate AI Image';
+                btn.textContent = '🎲 Generate Another Image';
 
-                // Add random CBF67 slogan
+                // Add random slogan
                 const slogan = slogans[Math.floor(Math.random() * slogans.length)];
                 console.log('CBF67 says: ' + slogan);
             };
@@ -356,8 +422,6 @@
 
         function downloadImage() {
             if (!currentImageUrl) return;
-
-            // Open image in new tab (direct download requires CORS)
             window.open(currentImageUrl, '_blank');
         }
     </script>
